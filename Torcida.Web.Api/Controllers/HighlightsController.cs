@@ -1,13 +1,18 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
+using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Net.Http.Headers;
+using Newtonsoft.Json;
 
 namespace Torcida.Web.Api.Controllers
 {
@@ -77,13 +82,13 @@ namespace Torcida.Web.Api.Controllers
                 return BadRequest($"Expected a multipart request, but got {Request.ContentType}");
             }
 
-            var boundary = MultipartRequestHelper.GetBoundary(MediaTypeHeaderValue.Parse(HttpContext.Request.ContentType),
+            var boundary = MultipartRequestHelper.GetBoundary(Microsoft.Net.Http.Headers.MediaTypeHeaderValue.Parse(HttpContext.Request.ContentType),
                                                               FormOptions.MultipartBoundaryLengthLimit);
             var reader = new MultipartReader(boundary, HttpContext.Request.Body);
             var section = await reader.ReadNextSectionAsync();
             if (section != null)
             {
-                var hasContentDisposition = ContentDispositionHeaderValue.TryParse(section.ContentDisposition, out ContentDispositionHeaderValue contentDisposition);
+                var hasContentDisposition = Microsoft.Net.Http.Headers.ContentDispositionHeaderValue.TryParse(section.ContentDisposition, out var contentDisposition);
 
                 if (hasContentDisposition)
                 {
@@ -102,12 +107,43 @@ namespace Torcida.Web.Api.Controllers
                             await section.Body.CopyToAsync(targetStream);
                         }
 
-                        return Created($"{Request.Path.Value}/{Path.GetFileNameWithoutExtension(name)}", new { });
+                        await SendNotificationAsync();
+                        var id = Path.GetFileNameWithoutExtension(name);
+                        return Created($"{Request.Path.Value}/{id}", new { @id = id });
                     }
                 }
             }
 
             return BadRequest("No content disposition found.");
+        }
+
+        private async Task SendNotificationAsync()
+        {
+            var credential = GoogleCredential
+                .FromFile("torcida-admin.json")
+                .CreateScoped("https://www.googleapis.com/auth/firebase.messaging");
+            var token = await credential.UnderlyingCredential
+                                        .GetAccessTokenForRequestAsync();
+
+            var proxy = new HttpClient();
+            proxy.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
+
+            var data = new {
+                message = new
+                {
+                    topic = "juventus",
+                    notification = new
+                    {
+                        body = "La tua squadra preferita ha realizzato un goal",
+                        title = "Goal!!"
+                    }
+                }
+            };
+            var json = JsonConvert.SerializeObject(data);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await proxy.PostAsync("https://fcm.googleapis.com/v1/projects/torcida-free/messages:send", content);
+            var message = await response.Content.ReadAsStringAsync();
         }
     }
 }
