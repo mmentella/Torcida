@@ -6,17 +6,13 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\netcoreapp2.0\Torcida.Web.Api.xml</DocumentationFile>
+    <DocumentationFile></DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <PlatformTarget>AnyCPU</PlatformTarget>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Content Remove="torcida-admin.json" />
-  </ItemGroup>
 
   <ItemGroup>
     <None Remove="Properties\PublishProfiles\estadium - FTP.pubxml" />

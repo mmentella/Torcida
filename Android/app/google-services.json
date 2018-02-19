@@ -1,0 +1,86 @@
+{
+  "project_info": {
+    "project_number": "948072963445",
+    "firebase_url": "https://torcida-free.firebaseio.com",
+    "project_id": "torcida-free",
+    "storage_bucket": "torcida-free.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:948072963445:android:5920de3503a2d18c",
+        "android_client_info": {
+          "package_name": "com.google.firebase.quickstart.fcm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "948072963445-ho0rkvj66q6fgefo8kqs3f4b2uqdlngj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSmHk-4G77TvCOEpiDA2-P5M-RN6_24oo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:948072963445:android:d66266bd535c475c",
+        "android_client_info": {
+          "package_name": "it.torcida.torcida"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "948072963445-4phm9seubkf04aomnkc6d3uv0e9bu7ka.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "it.torcida.torcida",
+            "certificate_hash": "5060f713467fc22af67df5945b80a5f44a93de90"
+          }
+        },
+        {
+          "client_id": "948072963445-ho0rkvj66q6fgefo8kqs3f4b2uqdlngj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSmHk-4G77TvCOEpiDA2-P5M-RN6_24oo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "948072963445-ho0rkvj66q6fgefo8kqs3f4b2uqdlngj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.PlatformAbstractions;
 using Swashbuckle.AspNetCore.Swagger;
+using Torcida.Web.Api.Services;
 
 namespace Torcida.Web.Api
 {
@@ -53,6 +54,10 @@ namespace Torcida.Web.Api
                 // integrate xml comments
                 //options.IncludeXmlComments(XmlCommentsFilePath);
             });
+
+            services.AddSingleton(new GoogleOptions());
+            services.AddTransient<INotificationService, GoogleNotificationService>();
+            services.AddTransient<IProviderService, ProviderService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
