@@ -109,7 +109,27 @@ namespace Torcida.Web.Api.Controllers
 
             var message = await SendNotificationAsync(videoId);
 
-            return Created($"{Request.Scheme}://{Request.Host}{Request.Path}/{videoId}", new {  message });
+            return Created($"{Request.Scheme}://{Request.Host}{Request.Path}/{videoId}", new { videoId });
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public Task<IActionResult> Delete([FromRoute]string id)
+        {
+            var video = $"{id}.mp4";
+            var json = $"{id}.json";
+
+            if (System.IO.File.Exists(video))
+            {
+                System.IO.File.Delete(video);
+            }
+
+            if (System.IO.File.Exists(json))
+            {
+                System.IO.File.Delete(json);
+            }
+
+            return Task.FromResult((IActionResult)Ok());
         }
 
         private async Task SaveVideoMetadataAsync(MultipartSection section, string videoId)
@@ -148,9 +168,6 @@ namespace Torcida.Web.Api.Controllers
 
             var id = Path.GetFileNameWithoutExtension(name);
             return id;
-
-            // var message = await SendNotificationAsync(id);
-            // return Created($"{Request.Scheme}://{Request.Host}{Request.Path}/{id}", new { message = message });
         }
 
         private async Task<string> SendNotificationAsync(string highlightId)
